@@ -42,7 +42,7 @@ async fn get_budgets() -> Json<Vec<Budget>> {
                 String::from("Sandra"),
             ],
             balance: 1000000,
-            icon: String::from("favorite"),
+            icon: String::from("all_inclusive"),
         },
         Budget {
             id: 4,
