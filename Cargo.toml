@@ -1,0 +1,9 @@
+[workspace]
+members = [
+    "api",
+    "commands",
+    "controllers",
+    "dtos",
+    "models",
+    "utils",
+]
