@@ -1,12 +1,17 @@
 use axum::{
-    routing::get,
-    Router,
+    routing::{get, post},
     Json,
+    Router,
+    response::IntoResponse,
+    http::StatusCode,
 };
-use serde::Serialize;
+use serde::{Deserialize, Serialize};
+use lazy_static::lazy_static; // remove eventually when converting to database
+use std::sync::Mutex;
 
-async fn get_budgets() -> Json<Vec<Budget>> {
-    let test: Vec<Budget> = vec![
+
+lazy_static! {
+static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
         Budget {
             id: 1,
             name: "Balcony Time".to_string(),
@@ -56,16 +61,29 @@ async fn get_budgets() -> Json<Vec<Budget>> {
             balance: 0,
             icon: String::from("airplane_ticket"),
         },
-    ];
-    
-    Json(test)
+    ]);
+}
+
+async fn get_budgets() -> Json<Vec<Budget>> { 
+    Json(GLOBAL_TEST.lock().unwrap().clone())
+}
+
+async fn add_budget(Json(budget): Json<Budget>) -> impl IntoResponse {
+    println!("Add triggered");
+    let mut list = GLOBAL_TEST.lock().unwrap();
+    list.push(budget);
+    let last: String = list.last().unwrap().clone().name;
+    println!("{last}");
+    (StatusCode::OK,)
 }
 
 pub fn budget_routes() -> Router {
-    Router::new().route("/getBudgets", get(get_budgets))
+    Router::new()
+        .route("/getBudgets", get(get_budgets))
+        .route("/addBudget", post(add_budget))
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Deserialize, Clone, Debug)]
 struct Budget {
     id: u64,
     name: String,
