@@ -22,15 +22,11 @@ name = "api"
 version = "0.1.0"
 dependencies = [
  "axum",
- "commands",
  "controllers",
- "dtos",
- "models",
  "serde",
  "serde_json",
  "tokio",
  "tower-http",
- "utils",
 ]
 
 [[package]]
@@ -141,12 +137,16 @@ checksum = "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd"
 [[package]]
 name = "commands"
 version = "0.1.0"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "controllers"
 version = "0.1.0"
 dependencies = [
  "axum",
+ "commands",
  "lazy_static",
  "serde",
  "serde_json",

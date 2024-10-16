@@ -8,7 +8,7 @@ use axum::{
 use serde::{Deserialize, Serialize};
 use lazy_static::lazy_static; // remove eventually when converting to database
 use std::sync::Mutex;
-
+use commands::budget_command::AddBudgetCommand;
 
 lazy_static! {
 static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
@@ -68,12 +68,10 @@ async fn get_budgets() -> Json<Vec<Budget>> {
     Json(GLOBAL_TEST.lock().unwrap().clone())
 }
 
-async fn add_budget(Json(budget): Json<Budget>) -> impl IntoResponse {
-    println!("Add triggered");
-    let mut list = GLOBAL_TEST.lock().unwrap();
-    list.push(budget);
-    let last: String = list.last().unwrap().clone().name;
-    println!("{last}");
+async fn add_budget(Json(payload): Json<AddBudgetCommand>) -> impl IntoResponse {
+    // let mut list = GLOBAL_TEST.lock().unwrap();
+    println!("name: {}, icon: {}", payload.name, payload.icon);
+    // list.push(payload);
     (StatusCode::OK,)
 }
 

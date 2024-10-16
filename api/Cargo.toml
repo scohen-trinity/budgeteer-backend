@@ -11,8 +11,7 @@ tokio = { version = "1.40.0", features = ["full"] }
 tower-http = { version = "0.6.1", features = ["cors"] }
 
 # Dependencies on other workspace crates
-commands = { path = "../commands" }
 controllers = { path = "../controllers" }
-dtos = { path = "../dtos" }
-models = { path = "../models" }
-utils = { path = "../utils" }
+# dtos = { path = "../dtos" }
+# models = { path = "../models" }
+# utils = { path = "../utils" }
