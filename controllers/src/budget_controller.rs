@@ -5,9 +5,10 @@ use axum::{
     response::IntoResponse,
     http::StatusCode,
 };
-use serde::{Deserialize, Serialize};
-use lazy_static::lazy_static; // remove eventually when converting to database
 use std::sync::Mutex;
+use lazy_static::lazy_static; // remove eventually when converting to database
+
+use models::budget_model::Budget;
 use commands::budget_command::AddBudgetCommand;
 
 lazy_static! {
@@ -79,13 +80,4 @@ pub fn budget_routes() -> Router {
     Router::new()
         .route("/getBudgets", get(get_budgets))
         .route("/addBudget", post(add_budget))
-}
-
-#[derive(Serialize, Deserialize, Clone, Debug)]
-struct Budget {
-    id: u64,
-    name: String,
-    participants: Vec<String>,
-    balance: u64,
-    icon: String,
 }

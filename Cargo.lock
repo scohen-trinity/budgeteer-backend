@@ -148,8 +148,7 @@ dependencies = [
  "axum",
  "commands",
  "lazy_static",
- "serde",
- "serde_json",
+ "models",
  "tokio",
  "tower-http",
 ]
@@ -157,6 +156,9 @@ dependencies = [
 [[package]]
 name = "dtos"
 version = "0.1.0"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "fnv"
@@ -375,6 +377,9 @@ dependencies = [
 [[package]]
 name = "models"
 version = "0.1.0"
+dependencies = [
+ "serde",
+]
 
 [[package]]
 name = "object"
