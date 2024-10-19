@@ -24,7 +24,7 @@ static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
                 String::from("Sandra"),
             ],
             balance: 999,
-            icon: String::from("favorite"),
+            icon: 0xe25b,
         },
         Budget {
             id: 2,
@@ -36,7 +36,7 @@ static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
                 String::from("Levi"),
             ],
             balance: 50,
-            icon: String::from("wallet"),
+            icon: 0xf07d4,
         },
         Budget {
             id: 3,
@@ -48,7 +48,7 @@ static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
                 String::from("Sandra"),
             ],
             balance: 1000000,
-            icon: String::from("all_inclusive"),
+            icon: 0xe07e,
         },
         Budget {
             id: 4,
@@ -60,7 +60,7 @@ static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
                 String::from("Sandra"),
             ],
             balance: 0,
-            icon: String::from("airplane_ticket"),
+            icon: 0xe06d,
         },
     ]);
 }
@@ -70,9 +70,10 @@ async fn get_budgets() -> Json<Vec<Budget>> {
 }
 
 async fn add_budget(Json(payload): Json<AddBudgetCommand>) -> impl IntoResponse {
-    // let mut list = GLOBAL_TEST.lock().unwrap();
+    let mut list = GLOBAL_TEST.lock().unwrap();
     println!("name: {}, icon: {}", payload.name, payload.icon);
-    // list.push(payload);
+    let tmp: Budget = Budget::new(payload.name, payload.participants, 0, payload.icon);
+    list.push(tmp);
     (StatusCode::OK,)
 }
 

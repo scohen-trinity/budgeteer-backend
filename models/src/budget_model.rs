@@ -6,5 +6,17 @@ pub struct Budget {
     pub name: String,
     pub participants: Vec<String>,
     pub balance: u64,
-    pub icon: String,
+    pub icon: u32,
+}
+
+impl Budget {
+    pub fn new(name: String, participants: Vec<String>, balance: u64, icon: u32) -> Budget {
+        Budget {
+            id: 1,
+            name,
+            participants,
+            balance,
+            icon,
+        }
+    }
 }
