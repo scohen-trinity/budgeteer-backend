@@ -147,6 +147,7 @@ version = "0.1.0"
 dependencies = [
  "axum",
  "commands",
+ "dtos",
  "lazy_static",
  "models",
  "tokio",

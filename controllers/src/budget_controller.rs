@@ -2,10 +2,8 @@ use axum::{
     routing::{get, post},
     Json,
     Router,
-    response::IntoResponse,
-    http::StatusCode,
 };
-use std::sync::Mutex;
+use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static; // remove eventually when converting to database
 
 use models::budget_model::Budget;
@@ -65,16 +63,17 @@ static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
     ]);
 }
 
-async fn get_budgets() -> Json<Vec<Budget>> { 
-    Json(GLOBAL_TEST.lock().unwrap().clone())
+async fn get_budgets() -> Json<Vec<Budget>> {
+    let budgets = GLOBAL_TEST.lock().unwrap().clone();
+    Json(budgets)
 }
 
-async fn add_budget(Json(payload): Json<AddBudgetCommand>) -> impl IntoResponse {
-    let mut list = GLOBAL_TEST.lock().unwrap();
-    println!("name: {}, icon: {}", payload.name, payload.icon);
+async fn add_budget(Json(payload): Json<AddBudgetCommand>) -> Json<Budget> {
+    let mut list: MutexGuard<'_, Vec<Budget>> = GLOBAL_TEST.lock().unwrap();
     let tmp: Budget = Budget::new(payload.name, payload.participants, 0, payload.icon);
+    let tmp2: Budget = tmp.clone();
     list.push(tmp);
-    (StatusCode::OK,)
+    Json(tmp2)
 }
 
 pub fn budget_routes() -> Router {

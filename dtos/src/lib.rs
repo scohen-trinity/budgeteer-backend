@@ -1,1 +1,1 @@
-pub mod budget_dto;
+pub mod budget_dtos;
