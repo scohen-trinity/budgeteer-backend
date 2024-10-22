@@ -7,7 +7,7 @@ use std::sync::{Mutex, MutexGuard};
 use lazy_static::lazy_static; // remove eventually when converting to database
 
 use models::budget_model::Budget;
-use commands::budget_command::AddBudgetCommand;
+use commands::budget_command::{AddBudgetCommand, QuickAddCommand};
 
 lazy_static! {
 static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
@@ -76,8 +76,14 @@ async fn add_budget(Json(payload): Json<AddBudgetCommand>) -> Json<Budget> {
     Json(tmp2)
 }
 
+async fn quick_add_amount(Json(payload): Json<QuickAddCommand>) -> Json<u64> {
+    println!("Add {} to {}", payload.amt, payload.id);
+    Json(1)
+}
+
 pub fn budget_routes() -> Router {
     Router::new()
         .route("/getBudgets", get(get_budgets))
         .route("/addBudget", post(add_budget))
+        .route("/quickAddAmount", post(quick_add_amount))
 }

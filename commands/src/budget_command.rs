@@ -11,3 +11,9 @@ pub struct AddBudgetCommand {
 pub struct UpdateBudgetCommand {
 
 }
+
+#[derive(Deserialize)]
+pub struct QuickAddCommand {
+    pub id: u64,
+    pub amt: f64,
+}
