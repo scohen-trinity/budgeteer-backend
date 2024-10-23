@@ -21,7 +21,7 @@ static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
                 String::from("Levi"),
                 String::from("Sandra"),
             ],
-            balance: 999,
+            balance: 999.99,
             icon: 0xe25b,
         },
         Budget {
@@ -33,7 +33,7 @@ static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
                 String::from("Nate"),
                 String::from("Levi"),
             ],
-            balance: 50,
+            balance: 50.17,
             icon: 0xf07d4,
         },
         Budget {
@@ -45,7 +45,7 @@ static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
                 String::from("Nate"),
                 String::from("Sandra"),
             ],
-            balance: 1000000,
+            balance: 1000000.50,
             icon: 0xe07e,
         },
         Budget {
@@ -57,7 +57,7 @@ static ref GLOBAL_TEST: Mutex<Vec<Budget>> = Mutex::new(vec![
                 String::from("Raven"),
                 String::from("Sandra"),
             ],
-            balance: 0,
+            balance: 0.00,
             icon: 0xe06d,
         },
     ]);
@@ -70,7 +70,7 @@ async fn get_budgets() -> Json<Vec<Budget>> {
 
 async fn add_budget(Json(payload): Json<AddBudgetCommand>) -> Json<Budget> {
     let mut list: MutexGuard<'_, Vec<Budget>> = GLOBAL_TEST.lock().unwrap();
-    let tmp: Budget = Budget::new(payload.name, payload.participants, 0, payload.icon);
+    let tmp: Budget = Budget::new(payload.name, payload.participants, 0.00, payload.icon);
     let tmp2: Budget = tmp.clone();
     list.push(tmp);
     Json(tmp2)
@@ -78,6 +78,12 @@ async fn add_budget(Json(payload): Json<AddBudgetCommand>) -> Json<Budget> {
 
 async fn quick_add_amount(Json(payload): Json<QuickAddCommand>) -> Json<u64> {
     println!("Add {} to {}", payload.amt, payload.id);
+    let mut list: MutexGuard<'_, Vec<Budget>> = GLOBAL_TEST.lock().unwrap();
+    for l in list.iter_mut() {
+        if l.id == payload.id {
+            l.balance += payload.amt;
+        }
+    }
     Json(1)
 }
 
