@@ -12,6 +12,3 @@ tower-http = { version = "0.6.1", features = ["cors"] }
 
 # Dependencies on other workspace crates
 controllers = { path = "../controllers" }
-# dtos = { path = "../dtos" }
-# models = { path = "../models" }
-# utils = { path = "../utils" }
